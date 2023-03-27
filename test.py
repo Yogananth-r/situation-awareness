@@ -1,12 +1,13 @@
 import argparse
 import imutils
 import cv2
+import winsound
 
 ap=argparse.ArgumentParser()
 ap.add_argument("-v","--video",help="video path")
 args=vars(ap.parse_args())
 
-camera = cv2.VideoCApture(args["video"])
+camera = cv2.VideoCapture(args["video"])
 
 while True:
     (grabbed,frame)=camera.read()
@@ -25,7 +26,7 @@ while True:
 
     for c in cnts:
         peri=cv2.arcLength(c,True)
-        approx=cv2.approxPloyDP(c,0.01*peri,True)
+        approx=cv2.approxPolyDP(c,0.01*peri,True)
 
         if len(approx)>=4 and len(approx)<=6:
             (x,y,w,h)=cv2.boundingRect(approx)
@@ -42,6 +43,9 @@ while True:
             if keepDims and keepSolidity and keepAspectRatio:
                 cv2.drawContours(frame,[approx],-1,(0,0,255),4)
                 status= " Target detected "
+                frequency = 2000
+                duration = 1500
+                winsound.Beep(frequency, duration)
                 Detect = True
                 M = cv2.moments(approx)
                 (cX, cY) = (int(M["m10"] // M["m00"]), int(M["m01"] // M["m00"]))
@@ -53,7 +57,7 @@ while True:
 
     cv2.putText(frame,status,(20,30),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,255),2)
 
-    cv2.im.show("Frame",frame)
+    cv2.imshow("Frame",frame)
     key=cv2.waitKey(1) & 0xFF
 
     if key==ord("q"):
