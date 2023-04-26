@@ -9,7 +9,7 @@ Original file is located at
 
 import cv2
 
-!pip install cvzone
+#!pip install cvzone
 import cvzone
 
 thres=0.6
@@ -20,14 +20,14 @@ cap.set(3,640)
 cap.set(4,480)
 
 classs=[]
-classfile='/content/classsco.names'
+classfile='classsco.names'
 with open(classfile,'rt') as f:
   classs=f.read().split('\n')
 
-print(classs)
+#print(classs)
 
-configpath='/content/ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt'
-weightspath="/content/frozen_inference_graph.pb"
+configpath='ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt'
+weightspath="frozen_inference_graph.pb"
 
 net = cv2.dnn_DetectionModel(weightspath,configpath)
 net.setInputSize(3230,320)
@@ -52,5 +52,5 @@ for i in range(1):
     pass
   
 
-  #cv2.imshow("image",img)
+  cv2.imshow("image",img)
   cv2.waitKey(1)
